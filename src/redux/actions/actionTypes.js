@@ -1,0 +1,6 @@
+export const SET_MIN_VAL = 'SET_MIN_VAL'
+export const SET_MAX_VAL = 'SET_MAX_VAL'
+export const SET_BRANDS = 'SET_BRANDS'
+export const SET_COLORS = 'SET_COLORS'
+export const RESET_FILTERS = 'RESET_FILTERS'
+export const ADD_TO_CART = 'ADD_TO_CART'
