@@ -1,20 +1,14 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { StyledRangeSlider } from './MultiRangeSliderStyles'
-const MultiRangeSlider = ({
-  min,
-  max,
-  onChangeMin,
-  onChangeMax,
-  minP,
-  maxP,
-}) => {
+const MultiRangeSlider = ({ min, max, onChangeMin, onChangeMax }) => {
   const minValRef = useRef(min)
   const maxValRef = useRef(max)
+
   const range = useRef(null)
-  const getPercent = useCallback(
-    (value) => Math.round(((value - 300) / (1500 - 300)) * 100),
-    []
-  )
+  const getPercent = useCallback((value) => {
+    const range = [min, max]
+    return Math.round(((value - 424.36) / (1302.84 - 424.36)) * 100)
+  }, [])
 
   useEffect(() => {
     const minPercent = getPercent(min)
@@ -38,8 +32,8 @@ const MultiRangeSlider = ({
     <StyledRangeSlider className="container">
       <input
         type="range"
-        min={300}
-        max={1500}
+        min={426}
+        max={1302.84}
         value={min}
         onChange={(event) => {
           const value = Math.min(Number(event.target.value), max - 1)
@@ -50,8 +44,8 @@ const MultiRangeSlider = ({
       />
       <input
         type="range"
-        min={300}
-        max={1500}
+        min={426}
+        max={1302.84}
         value={max}
         onChange={(event) => {
           const value = Math.max(Number(event.target.value), min + 1)

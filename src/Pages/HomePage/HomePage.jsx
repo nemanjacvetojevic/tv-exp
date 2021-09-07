@@ -3,9 +3,11 @@ import { StyledHome } from './HomePageStyles'
 import HeroComponent from '../../components/HeroComponent/Hero'
 import Filter from '../../components/FilterComponent/Filter'
 import ProductList from '../../components/ProductListComponent/ProductList'
+import { setMinVal, setMaxVal } from '../../redux/actions/priceActions'
 import { connect } from 'react-redux'
 import PuffLoader from 'react-spinners/PuffLoader'
 import debounce from '../../services/debounce'
+import { bindActionCreators } from 'redux'
 
 let debouncedFetch
 
@@ -13,20 +15,39 @@ function HomePage({
   brands: brandsState,
   colors: colorsState,
   priceRange: priceRangeState,
+  setMinVal,
+  setMaxVal,
 }) {
   const baseUrl = process.env.REACT_APP_API_BASE_URL
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-  const priceRange = `${priceRangeState.minVal},${priceRangeState.maxVal}`
+  const priceRange =
+    priceRangeState.minVal && priceRangeState.maxVal
+      ? `${priceRangeState.minVal},${priceRangeState.maxVal}`
+      : ''
   const colors = colorsState.join()
   const brands = brandsState
     .filter((brand) => brand.isChecked === true)
     .map((brand) => brand.name)
     .join()
-  const fetchLink =
-    baseUrl +
-    `/?product_price=${priceRange}&product_color=${colors}&product_brand=${brands}`
+  console.log(
+    priceRange === ',' && `product_price=${priceRange}`,
+    colors && colors.length && `&product_color=${colors}`,
+    brands &&
+      brands.forEach((element) => element.isChecked) &&
+      `&product_brand=${brands}`,
+    'vr'
+  )
+  const fetchLink = `${baseUrl}/?${
+    priceRange && `product_price=${priceRange}`
+  }${colors && colors.length && `&product_color=${colors}`}${
+    brands &&
+    brands.forEach((element) => element.isChecked) &&
+    `&product_brand=${brands}`
+  }
+    `
+  console.log(fetchLink, 'link jebeni')
   useEffect(() => {
     async function init() {
       try {
@@ -34,6 +55,10 @@ function HomePage({
         if (response.ok) {
           const json = await response.json()
           setData(json)
+          if (!priceRangeState.minVal && !priceRangeState.maxVal) {
+            setMinVal(json.prices[0].min)
+            setMaxVal(json.prices[0].max)
+          }
         } else {
           throw response
         }
@@ -51,6 +76,9 @@ function HomePage({
     }, 500)
     debouncedFetch()
   }, [fetchLink])
+
+  // useEffect(() => {
+  // }, [])
 
   return (
     <StyledHome>
@@ -81,4 +109,11 @@ function MapStateToProps(state) {
   }
 }
 
-export default connect(MapStateToProps)(HomePage)
+function MapDispatchToProps(dispatch) {
+  return {
+    setMinVal: bindActionCreators(setMinVal, dispatch),
+    setMaxVal: bindActionCreators(setMaxVal, dispatch),
+  }
+}
+
+export default connect(MapStateToProps, MapDispatchToProps)(HomePage)

@@ -1,7 +1,7 @@
 import { brands } from '../../utils/Brands'
 const initialState = {
   colors: [],
-  priceRange: { minVal: 300, maxVal: 1500 },
+  priceRange: {},
   brands,
   cartCount: 0,
 }

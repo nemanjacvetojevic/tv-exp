@@ -14,15 +14,9 @@ function PriceSelection(props) {
       <div className="range-selector-wrapper">
         <MultiRangeSlider
           onChangeMin={(minValue) => {
-            if (minValue <= 300) {
-              minValue = 300
-            }
             setMinVal(minValue)
           }}
           onChangeMax={(maxValue) => {
-            if (maxValue >= 1500) {
-              maxValue = 1500
-            }
             setMaxVal(maxValue)
           }}
           min={minVal}

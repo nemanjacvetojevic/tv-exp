@@ -5,7 +5,6 @@ export const StyledProduct = styled.section`
   border: 1px solid #e2e2e2;
   padding: 2.2rem 2rem;
   margin-bottom: 2.5rem;
-  width: 30%;
   box-sizing: border-box;
   margin-right: 1.8rem;
   @media (max-width: 1024px) {
