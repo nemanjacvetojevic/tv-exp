@@ -7,7 +7,7 @@ const MultiRangeSlider = ({ min, max, onChangeMin, onChangeMax }) => {
   const range = useRef(null)
   const getPercent = useCallback((value) => {
     const range = [min, max]
-    return Math.round(((value - 424.36) / (1302.84 - 424.36)) * 100)
+    return Math.round(((value - range[0]) / (range[1] - range[0])) * 100)
   }, [])
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const MultiRangeSlider = ({ min, max, onChangeMin, onChangeMax }) => {
     <StyledRangeSlider className="container">
       <input
         type="range"
-        min={426}
-        max={1302.84}
+        min={426.36}
+        max={1302.18}
         value={min}
         onChange={(event) => {
           const value = Math.min(Number(event.target.value), max - 1)
@@ -61,20 +61,4 @@ const MultiRangeSlider = ({ min, max, onChangeMin, onChangeMax }) => {
     </StyledRangeSlider>
   )
 }
-
-// function MapStateToProps(state) {
-//   return {
-//     minVal: state.minVal,
-//     maxVal: state.maxVal,
-//   }
-// }
-
-// function MapdDispatchToProps(dispatch) {
-//   return {
-//     setMinVal: bindActionCreators(priceActions.setMinVal, dispatch),
-//     setMaxVal: bindActionCreators(priceActions.setMaxVal, dispatch),
-//   }
-// }
-
-// export default connect(MapStateToProps, MapdDispatchToProps)(MultiRangeSlider)
 export default MultiRangeSlider
