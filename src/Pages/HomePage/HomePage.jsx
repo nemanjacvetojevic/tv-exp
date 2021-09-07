@@ -31,23 +31,12 @@ function HomePage({
     .filter((brand) => brand.isChecked === true)
     .map((brand) => brand.name)
     .join()
-  console.log(
-    priceRange === ',' && `product_price=${priceRange}`,
-    colors && colors.length && `&product_color=${colors}`,
-    brands &&
-      brands.forEach((element) => element.isChecked) &&
-      `&product_brand=${brands}`,
-    'vr'
-  )
   const fetchLink = `${baseUrl}/?${
     priceRange && `product_price=${priceRange}`
   }${colors && colors.length && `&product_color=${colors}`}${
-    brands &&
-    brands.forEach((element) => element.isChecked) &&
-    `&product_brand=${brands}`
+    brands && `&product_brand=${brands}`
   }
     `
-  console.log(fetchLink, 'link jebeni')
   useEffect(() => {
     async function init() {
       try {
@@ -55,10 +44,6 @@ function HomePage({
         if (response.ok) {
           const json = await response.json()
           setData(json)
-          if (!priceRangeState.minVal && !priceRangeState.maxVal) {
-            setMinVal(json.prices[0].min)
-            setMaxVal(json.prices[0].max)
-          }
         } else {
           throw response
         }
@@ -77,8 +62,12 @@ function HomePage({
     debouncedFetch()
   }, [fetchLink])
 
-  // useEffect(() => {
-  // }, [])
+  useEffect(() => {
+    if (!priceRangeState.minVal && !priceRangeState.maxVal && data) {
+      setMinVal(data.prices[0].min)
+      setMaxVal(data.prices[0].max)
+    }
+  }, [data, setMinVal, setMaxVal, priceRangeState])
 
   return (
     <StyledHome>
